@@ -26,7 +26,6 @@ int main(int argc, char** argv) {
 		cout << "Opcion: ";
 		cin >> opcion1;
 		switch(opcion1) {
-			
 			//MANTENIMIENTO
 			case 1: {
 				int opcion2 = 0;
@@ -282,18 +281,7 @@ int main(int argc, char** argv) {
 								cout<<endl;
 								switch(opcionA) {
 									case 1: {
-										int opcionA = 0;
-							while(opcionA != 3){
-								cout<< "Ingrese una opcion"<<endl;
-								cout<<"1) Crear Nueva Playlist"<<endl;
-								cout<<"2) Usar Playlist Existente"<<endl;
-								cout<<"3) Regresar al Menu anterior"<<endl;
-								cout<<"Opcion: ";
-								cin>>opcionA;
-								cout<<endl;
-								switch(opcionA){
-									case 1:{
-										if(!canciones.empty()){
+										if(!canciones.empty()) {
 											int cont = 1;
 											char resp = 's';
 											string nombrePlaylist;
@@ -302,8 +290,8 @@ int main(int argc, char** argv) {
 											Playlist* Playl = new Playlist();
 											Playl->setNombre(nombrePlaylist);
 											cout<<endl;
-											while(resp == 's'||resp == 'S'){
-												for(int i = 0; i<canciones.size();i++){
+											while(resp == 's'||resp == 'S') {
+												for(int i = 0; i<canciones.size(); i++) {
 													Cancion* cancion = canciones.at(i);
 													cout<<(i+1)<<") "<<	cancion->getNombre()<<endl;
 												}
@@ -311,21 +299,21 @@ int main(int argc, char** argv) {
 												cout<<endl;
 												cout<<"Ingrese la posicion de la cancion que desea agregar a su Playlist "<<nombrePlaylist<<": ";
 												cin>>pos;
-												while(pos-1<0||pos-1>canciones.size()){
+												while(pos-1<0||pos-1>canciones.size()) {
 													cout<<"Posicion invalida, ingrese de nuevo: ";
 													cin>>pos;
 												}
 												Playl->operator+(canciones.at(pos-1));
-												if(cont == 1){
+												if(cont == 1) {
 													Playl->setNombre(nombrePlaylist);
 													playlists.push_back(Playl);
 												}
 												cout<<endl;
 												cont++;
 												cout<<"Desea agregar otra cancion a la playlist? (S/N): ";
-												cin>>resp;		
+												cin>>resp;
 											}
-										}else{
+										} else {
 											cout<<"No hay canciones, porfavor agregue almenos una cancion"<<endl;
 										}
 										break;
@@ -365,7 +353,7 @@ int main(int argc, char** argv) {
 													cout<<"Posicion invalida, ingrese de nuevo: ";
 													cin>>pos;
 												}
-												*Playl = *Playl + *canciones.at(pos-1);
+												Playl->operator+(canciones.at(pos-1));
 												cout<<endl;
 												cout<<"Desea agregar otra cancion a la playlist? (S/N): ";
 												cin>>resp;
@@ -418,7 +406,8 @@ int main(int argc, char** argv) {
 											cout<<"Posicion invalida vuelva a ingresarla: ";
 											cin>>pos2;
 										}
-										*playlists.at(pos-1) = *playlists.at(pos-1)+*albumes.at(pos2-1);
+										Playlist* pl = playlists.at(pos-1);
+										pl->operator+(albumes.at(pos2-1));
 									}
 								} else {
 									cout<<"Lista de albumes vacia, agregue un album"<<endl;
@@ -448,7 +437,7 @@ int main(int argc, char** argv) {
 											cout<<"Ingrese el nombre del nuevo album: ";
 											cin>>nombreAlbum;
 											cout<<endl;
-											Album a;
+											Album* a;
 											Album* al = new Album();
 											al->setNombre(nombreAlbum);
 											while(resp == 's'||resp == 'S') {
@@ -480,7 +469,7 @@ int main(int argc, char** argv) {
 														}
 													}
 												}
-												a = *al + *canciones.at(pos-1);
+												a->operator+(canciones.at(pos-1));
 												string artistas;
 												if(!igual) {
 													string artistas = "Various Artists";
@@ -535,7 +524,7 @@ int main(int argc, char** argv) {
 														cout<<"Posicion invalida, ingrese de nuevo: ";
 														cin>>pos;
 													}
-													*Al = *Al + *canciones.at(pos-1);
+													Al->operator+(canciones.at(pos-1));
 													cout<<endl;
 													cout<<"Desea agregar otra cancion al Album? (S/N): ";
 													cin>>resp;
@@ -558,32 +547,28 @@ int main(int argc, char** argv) {
 									Playlist* aux = playlists.at(i);
 									cout<<(i+1)<<") "<<aux->getNombre();
 								}
+								cout<<endl;
 								cout<<"Ingrese la posicion de la playlist que desea agregarle otra playlist: ";
 								cin>>posp;
 								string nombreP;
-								char resp = 's';
 								cout<<endl;
-								Playlist* Pl = playlists.at(posp);
+								Playlist* Pl = new Playlist();
+								Pl = playlists.at(posp-1);
 								nombreP = Pl->getNombre();
-								while(resp=='s'||resp=='S') {
-									for(int i = 0; i<canciones.size(); i++) {
-										Cancion* aux = canciones.at(i);
-										cout<<(i+1)<<") "<<aux->getNombre();
-									}
-									int pos;
-									cout<<"Ingrese la posicion de la playlist que desea agregar a su playlist "<<nombreP<<": ";
-									cin>>pos;
-									while(pos>playlists.size()||pos<=0) {
-										cout<<"La posicion que ingreso es invalida porfavor ingrese una posicion valida."<<endl;
-										cout<<"Ingrese la posicion: ";
-										cin>>pos;
-									}
-									Playlist* caux = playlists.at(pos-1);
-									*Pl = *Pl + *caux;
-									cout<<"Cancion Agregada exitosamente";
-									cout<<"Desea agregar otra cancion al Album? (s/n)";
-									cin>>resp;
+								for(int i = 0; i<playlists.size(); i++) {
+									Playlist* aux2 = playlists.at(i);
+									cout<<(i+1)<<") "<<aux2->getNombre();
 								}
+								int pos;
+								cout<<"Ingrese la posicion de la playlist que desea agregar a su playlist "<<nombreP<<": ";
+								cin>>pos;
+								while(pos-1>playlists.size()||pos-1<0) {
+									cout<<"La posicion que ingreso es invalida porfavor ingrese una posicion valida."<<endl;
+									cout<<"Ingrese la posicion: ";
+									cin>>pos;
+								}
+								Pl->operator+(playlists.at(pos-1));
+								cout<<"Playlist Agregada exitosamente";
 							}
 							break;
 						}
@@ -634,17 +619,17 @@ int main(int argc, char** argv) {
 									string cn;
 									cout<<"Ingrese el nombre de la cancion que va a eliminar: ";
 									cin>>cn;
-									Cancion Can;
+									Cancion* Can;
 									for(int i = 0; i<canciones.size(); i++) {
 										Cancion* C1 = canciones.at(i);
 										string nombre = C1->getNombre();
 										if(cn==nombre) {
-											Cancion Can = *C1;
+											Cancion* Can = C1;
 											vali2 = 1;
 										}
 									}
 									if(vali2 == 1) {
-										*Play = *Play - Can;
+										Play->operator+(Can);
 										cout<<"Cancion eliminada exitosamente"<<endl;
 									} else {
 										cout<<"Esa Cancion no existe porfavor ingrese una cancion valida"<<endl;
@@ -687,19 +672,19 @@ int main(int argc, char** argv) {
 									int vali2 = 0;
 									cout<<"Ingrese el nombre del genero que desea quitar de la playlist: ";
 									cin>>generon;
-									Genero Gen;
+									Genero* Gen;
 									string nombreG;
 									for(int i = 0; i<generos.size(); i++) {
 										Genero* G1 = generos.at(i);
 										string nombre = G1->getNombre();
 										if(generon==nombre) {
-											Genero Gen = *G1;
+											Gen = G1;
 											vali2 = 1;
 											nombreG = nombre;
 										}
 									}
 									if(vali2==1) {
-										*Play = *Play - Gen;
+										Play->operator-(Gen);
 										cout<<"Canciones de Genero "<<nombreG<<endl;
 									} else {
 										cout<<"Este genero no existe, ingrese uno valido"<<endl;

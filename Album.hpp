@@ -12,6 +12,7 @@ private:
 	vector<Cancion*> canciones;
 public:
 	Album();
+	Album(string nombres);
 	Album(string,string,vector<Cancion*>);
 	~Album();
 	string getNombre();

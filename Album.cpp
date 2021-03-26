@@ -2,6 +2,9 @@
 Album::Album() {
 
 }
+Album::Album(string nombres) {
+    this->nombre = nombre;
+}
 Album::Album(string nombre,string artistaA,vector<Cancion*> canciones) {
     this->nombre = nombre;
     this->artistaA = artistaA;
@@ -49,13 +52,7 @@ Album* Album::operator*(int a){
 	return res;
 }
 Album* Album::operator+(Cancion* c){
-	Album* res;
-    vector<Cancion*> aux;
-    aux = this->getCanciones();
-    aux.push_back(c);
-    for(int i = 0;i<aux.size();i++){
-    	Cancion* aux2 = aux.at(i);
-    	res->agregarCancion(aux2);
-	}
+	Album* res = new Album(this->nombre);
+	this->canciones.push_back(c);
 	return res;
 }

@@ -2,6 +2,7 @@
 #define REPRODUCTORMUSICA_HPP
 #include<string>
 #include<iostream>
+#include <fstream>
 #include "Cancion.hpp"
 #include "Genero.hpp"
 #include "Playlist.hpp"
@@ -9,7 +10,7 @@
 using namespace std;
 class ReproductorMusica {
 	private:
-		vector<Cancion*> prcanciones;
+		vector<Cancion*> canciones;
 		vector<Genero*> generos;
 		vector<Playlist*> playlists;
 		vector<Album*> albumes;
